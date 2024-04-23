@@ -9832,7 +9832,7 @@
       ];
       function loadStep(stepIndex) {
         // Check if the requested step index is within bounds
-        if (stepIndex < 0 || stepIndex >= steps.length) {
+        if (stepIndex >= steps.length || stepIndex < 0) {
           console.error("Requested step index out of bounds:", stepIndex);
           return; // Stop further execution if out of bounds
         }
