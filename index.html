@@ -9809,62 +9809,62 @@
       </div>
     </footer>
     <script>
-      let currentStep = 0;
+      let currentStepId = 0;
       const steps = [
         {
-          id: 1,
+          id: 0,
           question: "Máte více než jeden dluh?",
           options: {
-            Ano: 2,
-            Ne: 3,
-            Nevím: 4,
+            Ano: 1,
+            Ne: 2,
+            Nevím: 3,
+          },
+        },
+        {
+          id: 1,
+          question:
+            "Špatně vycházíte s pěnězi? Máte strach, že se brzy zadlužíte? Nebo dlužíte jen jednomu věřiteli a máte problém dluh splatit?",
+          options: {
+            Ano: 4,
+            Ne: 5,
           },
         },
         {
           id: 2,
           question:
-            "Špatně vycházíte s pěnězi? Máte strach, že se brzy zadlužíte? Nebo dlužíte jen jednomu věřiteli a máte problém dluh splatit?",
-          options: ["Ano", "Ne"],
+            "Chytil vás revizor, nesplácíte úvěr nebo neplatíte zdravotní pojištění?",
+          options: {
+            Ano: 4,
+            Ne: 5,
+          },
         },
         {
           id: 3,
           question:
-            "Chytil vás revizor, nesplácíte úvěr nebo neplatíte zdravotní pojištění?",
-          options: ["Ano", "Ne"],
-        },
-        {
-          id: 4,
-          question:
             "Nezvládáte splácet, dluhy jsou po splatnosti nebo máte exekuce?",
-          options: ["Ano", "Ne"],
+          options: {
+            Ano: 4,
+            Ne: 5,
+          },
         },
         // Add more steps as needed
       ];
 
-      function displayStep(step) {
-        const stepData = steps[step];
+      function displayStep(stepId) {
+        const stepData = steps[stepId];
         document.getElementById("question").textContent = stepData.question;
         const buttonsContainer = document.getElementById("options");
         buttonsContainer.innerHTML = "";
-        stepData.options.forEach((option) => {
+        Object.entries(stepData.options).forEach(([option, nextStepId]) => {
           const button = document.createElement("button");
+          button.className =
+            "bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase";
+
           button.textContent = option;
-          button.onclick = () => nextStep();
+          button.onclick = () => handleOptionClick(nextStepId);
           buttonsContainer.appendChild(button);
         });
       }
-
-      function nextStep() {
-        currentStep++;
-        if (currentStep < steps.length) {
-          displayStep(currentStep);
-        } else {
-          // Handle completion
-          console.log("Wizard completed");
-        }
-      }
-
-      displayStep(currentStep);
     </script>
   </body>
 </html>
