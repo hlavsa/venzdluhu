@@ -9865,6 +9865,16 @@
           buttonsContainer.appendChild(button);
         });
       }
+      function handleOptionClick(nextStepId) {
+        if (typeof nextStepId === "number") {
+          displayStep(nextStepId);
+        } else {
+          console.log("Wizard completed");
+          // Handle completion, e.g., display summary or contact info
+        }
+      }
+
+      displayStep(currentStepId);
     </script>
   </body>
 </html>
