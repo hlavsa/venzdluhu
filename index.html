@@ -9814,12 +9814,29 @@
         {
           id: 1,
           question: "Máte více než jeden dluh?",
-          options: ["Ano", "Ne", "Nevím"],
+          options: {
+            Ano: 2,
+            Ne: 3,
+            Nevím: 4,
+          },
         },
         {
           id: 2,
-          question: "Kolik přibližně dlužíte?",
-          options: ["Méně než 50,000", "50,000 až 200,000", "Více než 200,000"],
+          question:
+            "Špatně vycházíte s pěnězi? Máte strach, že se brzy zadlužíte? Nebo dlužíte jen jednomu věřiteli a máte problém dluh splatit?",
+          options: ["Ano", "Ne"],
+        },
+        {
+          id: 3,
+          question:
+            "Chytil vás revizor, nesplácíte úvěr nebo neplatíte zdravotní pojištění?",
+          options: ["Ano", "Ne"],
+        },
+        {
+          id: 4,
+          question:
+            "Nezvládáte splácet, dluhy jsou po splatnosti nebo máte exekuce?",
+          options: ["Ano", "Ne"],
         },
         // Add more steps as needed
       ];
