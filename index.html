@@ -9585,7 +9585,7 @@
           >
             Máte více než jeden dluh?
           </h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="answers">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="options">
             <button
               class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase"
             >
@@ -9814,52 +9814,40 @@
         {
           id: 1,
           question: "Máte více než jeden dluh?",
-          answers: [
-            { option: "Ano", nextStep: 2 },
-            { option: "Ne", nextStep: 3 },
-            { option: "Nevím", nextStep: 4 },
-          ],
+          options: ["Ano", "Ne", "Nevím"],
         },
         {
           id: 2,
-          question: "What would you like to do next?",
-          answers: [
-            { option: "Option A", nextStep: 5 },
-            { option: "Option B", nextStep: 6 },
-          ],
+          question: "Kolik přibližně dlužíte?",
+          options: ["Méně než 50,000", "50,000 až 200,000", "Více než 200,000"],
         },
         // Add more steps as needed
       ];
-      function loadStep(stepIndex) {
-        // Check if the requested step index is within bounds
-        if (stepIndex >= steps.length || stepIndex < 0) {
-          console.error("Requested step index out of bounds:", stepIndex);
-          return; // Stop further execution if out of bounds
-        }
 
-        const step = steps[stepIndex];
-        document.getElementById("question").textContent = step.question;
-        const answersContainer = document.getElementById("answers");
-        answersContainer.innerHTML = ""; // Clear previous options
-
-        step.answers.forEach((answer) => {
+      function displayStep(step) {
+        const stepData = steps[step];
+        document.getElementById("question").textContent = stepData.question;
+        const buttonsContainer = document.getElementById("options");
+        buttonsContainer.innerHTML = "";
+        stepData.options.forEach((option) => {
           const button = document.createElement("button");
-          button.textContent = answer.option;
-          button.className =
-            "bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase";
-          button.onclick = () => {
-            if (answer.nextStep !== undefined) {
-              loadStep(answer.nextStep);
-            } else {
-              console.error(
-                "No next step defined for this answer:",
-                answer.option
-              );
-            }
-          };
-          answersContainer.appendChild(button);
+          button.textContent = option;
+          button.onclick = () => nextStep();
+          buttonsContainer.appendChild(button);
         });
       }
+
+      function nextStep() {
+        currentStep++;
+        if (currentStep < steps.length) {
+          displayStep(currentStep);
+        } else {
+          // Handle completion
+          console.log("Wizard completed");
+        }
+      }
+
+      displayStep(currentStep);
     </script>
   </body>
 </html>
