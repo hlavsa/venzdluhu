@@ -9839,20 +9839,25 @@
       ];
 
       function displayStep(stepId) {
-        const stepData = steps[stepId];
+        const stepData = steps.find((step) => step.id === stepId);
         document.getElementById("question").textContent = stepData.question;
         const buttonsContainer = document.getElementById("options");
         buttonsContainer.innerHTML = "";
-        Object.entries(stepData.options).forEach(([option, nextStepId]) => {
+
+        const optionKeys = Object.keys(stepData.options);
+        const gridTemplateColumns = `repeat(${optionKeys.length}, minmax(0, 1fr))`; // Update grid layout based on number of options
+        buttonsContainer.style.gridTemplateColumns = gridTemplateColumns;
+
+        optionKeys.forEach((option) => {
           const button = document.createElement("button");
+          button.textContent = option;
           button.className =
             "bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase";
-
-          button.textContent = option;
-          button.onclick = () => handleOptionClick(nextStepId);
+          button.onclick = () => handleOptionClick(stepData.options[option]);
           buttonsContainer.appendChild(button);
         });
       }
+
       function handleOptionClick(nextStepId) {
         if (typeof nextStepId === "number") {
           displayStep(nextStepId);
