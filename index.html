@@ -9905,7 +9905,7 @@
           question:
             "Vypadá to, že splňujete podmínky oddlužení. Chcete rovnou nalézt poradnu, která vám pomůže a sepíše vám návrh zdarma?",
           options: {
-            Ano: "./another-page.html",
+            Ano: "./kalk-ano.html",
             "Oddlužení nechci": "./nickreseni.html",
           },
         },
@@ -9947,7 +9947,17 @@
           button.textContent = option;
           button.className =
             "bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase";
-          button.onclick = () => handleOptionClick(stepData.options[option]);
+          if (
+            typeof nextStepOrLink === "string" &&
+            (nextStepOrLink.endsWith(".html") ||
+              nextStepOrLink.startsWith("http"))
+          ) {
+            // If the option is a link, handle it as an anchor redirection
+            button.onclick = () => (window.location.href = nextStepOrLink);
+          } else {
+            // Otherwise, handle it as a step transition
+            button.onclick = () => handleOptionClick(nextStepOrLink);
+          }
           buttonsContainer.appendChild(button);
         });
       }
