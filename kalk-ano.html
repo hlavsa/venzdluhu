@@ -10120,12 +10120,13 @@
         });
       }
 
-      function handleOptionClick(nextStepId) {
-        if (typeof nextStepId === "number") {
-          displayStep(nextStepId);
+      function handleOptionClick(nextStep) {
+        if (typeof nextStep === "number") {
+          displayStep(nextStep);
+        } else if (typeof nextStep === "string") {
+          window.location.href = nextStep; // Redirect to the linked HTML file
         } else {
-          console.log("Wizard completed");
-          // Handle completion, e.g., display summary or contact info
+          console.log("Wizard completed or invalid step");
         }
       }
 
