@@ -9593,6 +9593,7 @@
           </div>
         </div>
       </div>
+
       <div class="bg-gray-100 p-6" id="nic-k-reseni" style="display: none">
         <div
           class="mt-8 bg-white shadow-md rounded p-8 md:p-24 mb-4 max-w-[80ch] mx-auto size-full"
@@ -9889,40 +9890,57 @@
             Ne: 1,
           },
         },
+        {
+          id: 4,
+          question: "Kalkulačka",
+          options: {
+            Ano: 5,
+            Ne: 6,
+          },
+          image: "./kalk.png",
+        },
+
+        {
+          id: 5,
+          question:
+            "Vypadá to, že splňujete podmínky oddlužení. Chcete rovnou nalézt poradnu, která vám pomůže a sepíše vám návrh zdarma?",
+          options: {
+            Ano: 6,
+            Oddluženínechci: 7,
+          },
+        },
       ];
 
       function displayStep(stepId) {
-        // Check if we're at the completion step (using the step ID for your final step)
-        if (stepId === 4) {
-          // Hide or remove the current wizard content
-          document.getElementById("wizard").style.display = "none";
-          const nickreseniDiv = document.getElementById("nic-k-reseni");
-          nickreseniDiv.style.display = "block";
-        } else {
-          const stepData = steps.find((step) => step.id === stepId);
-          if (!stepData) {
-            console.error("Step data not found for ID:", stepId);
-            return;
-          }
-
-          document.getElementById("question").textContent = stepData.question;
-          const buttonsContainer = document.getElementById("options");
-
-          buttonsContainer.innerHTML = "";
-
-          const optionKeys = Object.keys(stepData.options);
-          const gridTemplateColumns = `repeat(${optionKeys.length}, minmax(0, 1fr))`; // Update grid layout based on number of options
-          buttonsContainer.style.gridTemplateColumns = gridTemplateColumns;
-
-          optionKeys.forEach((option) => {
-            const button = document.createElement("button");
-            button.textContent = option;
-            button.className =
-              "bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase";
-            button.onclick = () => handleOptionClick(stepData.options[option]);
-            buttonsContainer.appendChild(button);
-          });
+        const stepData = steps.find((step) => step.id === stepId);
+        if (!stepData) {
+          console.error("Step data not found for ID:", stepId);
+          return;
         }
+
+        // Update the question
+        document.getElementById("question").textContent = stepData.question;
+
+        // Handle image display for step ID 4
+        if (stepId === 4) {
+          const imageElement = document.createElement("img");
+          imageElement.src = stepData.image;
+          imageElement.alt = "Relevant Image";
+          imageElement.className = "w-12 h-12"; // Adjust size as needed
+          document.getElementById("wizard").prepend(imageElement); // Add image to the top of the wizard
+        }
+
+        // Update options buttons
+        const buttonsContainer = document.getElementById("options");
+        buttonsContainer.innerHTML = "";
+        Object.keys(stepData.options).forEach((option) => {
+          const button = document.createElement("button");
+          button.textContent = option;
+          button.className =
+            "bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase";
+          button.onclick = () => handleOptionClick(stepData.options[option]);
+          buttonsContainer.appendChild(button);
+        });
       }
 
       function handleOptionClick(nextStepId) {
