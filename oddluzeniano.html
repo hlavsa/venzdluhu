@@ -10182,23 +10182,10 @@
         displayFormForOption(selectedOption);
       }
 
-      function submitForm(timeOfDay) {
-        let input;
-        switch (timeOfDay) {
-          case "Osobně":
-            input = document.getElementById("breakfast").value;
-            break;
-          case "Kontaktním fomulářem":
-            input = document.getElementById("lunch").value;
-            break;
-          case "Evening":
-            input = document.getElementById("dinner").value;
-            break;
-        }
-        console.log(`${timeOfDay} Choice: ${input}`);
+      function submitForm() {
+        // Confirm submission and redirect
 
-        // Redirect to the confirmation page
-        window.location.href = "confirm.html";
+        window.location.href = "./confirm.html"; // Redirect to confirm.html
       }
 
       function next() {
