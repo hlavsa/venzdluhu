@@ -10143,7 +10143,7 @@
                         <h4>Najdeme nejbližšího vhodného poradce</h4>
                         <p>Zadejte vaši obec nebo město a najdeme vám nejbližšího vhodného poradce:</p>
                         <input type="text" placeholder="Zadejte Vaši obec nebo město…" id="osobObec">
-                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+                        <button onclick="submitForm()">Vyhledat poradce</button>`;
             break;
           case "Kontaktním fomulářem":
             formHTML = `<h3 class="uppercase">Kontaktní formulář</h3>
@@ -10154,7 +10154,7 @@
                         <input type="text" placeholder="Váš E-mail" id="kontaktMail">
                         <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
                         
-                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+                        <button onclick="submitForm()">Vyhledat poradce</button>`;
             break;
           case "Telefonicky":
             formHTML = `<h3 class="uppercase">Telefonicky</h3>
@@ -10162,7 +10162,7 @@
                         <p>Zadejte vaše telefonní číslo. Ozveme se vám v co nejkratším termínu:</p>
                         <input type="text" placeholder="Zadejte telefonní číslo" id="telefTel">
                         <p>Vaše telefonní číslo zůstává anonymní a použijeme ho pouze k tomu, abychom vás mohli kontaktovat. Neukládáme ho a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+                        <button onclick="submitForm()">Vyhledat poradce</button>`;
             break;
           case "Videohovorem":
             formHTML = `<h3 class="uppercase">Videohovorem</h3>
@@ -10171,7 +10171,7 @@
                         <input type="text" placeholder="Vaše telefonní číslo:" id="videoTel">
                         <input type="text" placeholder="Váš E-mail" id="videoMail">
                         <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+                        <button onclick="submitForm()">Vyhledat poradce</button>`;
             break;
         }
         document.getElementById("extraForm").innerHTML = formHTML;
@@ -10180,6 +10180,25 @@
 
       function handleRadioChange(selectedOption) {
         displayFormForOption(selectedOption);
+      }
+
+      function submitForm(timeOfDay) {
+        let input;
+        switch (timeOfDay) {
+          case "Osobně":
+            input = document.getElementById("breakfast").value;
+            break;
+          case "Kontaktním fomulářem":
+            input = document.getElementById("lunch").value;
+            break;
+          case "Evening":
+            input = document.getElementById("dinner").value;
+            break;
+        }
+        console.log(`${timeOfDay} Choice: ${input}`);
+
+        // Redirect to the confirmation page
+        window.location.href = "confirm.html";
       }
 
       function next() {
