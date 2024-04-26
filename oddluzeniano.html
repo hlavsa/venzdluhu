@@ -10076,8 +10076,7 @@
       </div>
     </footer>
     <script>
-      let currentStep = 0;
-      const steps = [
+      const wizardData = [
         {
           type: "checkbox",
           question: "Co chcete řešit?",
@@ -10089,7 +10088,7 @@
           ],
         },
         {
-          type: "button",
+          type: "buttons",
           question: "Chcete službu zadarmo nebo za poplatek?",
           options: ["Zadarmo", "Zadarmo i za poplatek"],
         },
@@ -10105,110 +10104,108 @@
         },
       ];
 
+      let currentStep = 0;
+      let selectedOption = null; // Variable to store the radio selection
+
       function displayStep() {
-        const step = steps[currentStep];
-        document.getElementById("question").textContent = step.question;
-        let optionsContent = "";
-        // Check for specific questions and add additional HTML
-        if (step.question === "Chcete službu zadarmo nebo za poplatek?") {
-          optionsContent += `<p>Můžeme Vás propojit i s advokáty či insolvenčními správci, kteří poskytují služby v oblasti oddlužení za poplatek.</p>`;
-        }
+        const step = wizardData[currentStep];
+        const container = document.getElementById("wizard");
+        container.innerHTML = `<h2>${step.question}</h2>`;
+
         switch (step.type) {
           case "checkbox":
-            step.options.forEach((option) => {
-              optionsContent += `<label><input type="checkbox" value="${option}">${option}</label><br>`;
+            step.options.forEach((option, index) => {
+              container.innerHTML += `
+                    <div>
+                        <input type="checkbox" id="option${index}" name="option${index}">
+                        <label for="option${index}">${option}</label>
+                    </div>
+                `;
             });
+            container.innerHTML += `<button onclick="handleNext()">Další krok</button>`;
             break;
-          case "button":
+          case "buttons":
             step.options.forEach((option) => {
-              optionsContent += `<button onclick="handleAnswer('${option}')">${option}</button>`;
+              container.innerHTML += `<button onclick="handleNext()">${option}</button>`;
             });
             break;
           case "radio":
             step.options.forEach((option, index) => {
-              optionsContent += `<label><input type="radio" name="radioGroup" value="${option}" ${
-                index === 0 ? "checked" : ""
-              }>${option}</label><br>`;
+              container.innerHTML += `
+                    <div>
+                        <input type="radio" id="option${index}" name="option" value="${option}"
+                            onchange="selectedOption='${option}'">
+                        <label for="option${index}">${option}</label>
+                    </div>
+                `;
             });
+            container.innerHTML += `<button onclick="handleNext()">Další krok</button>`;
             break;
         }
-        document.getElementById("options").innerHTML = optionsContent;
-        document.getElementById("kontaktForm").style.display = "none";
-      }
-      function displayFormForOption(option) {
-        let formHTML = "";
-        switch (option) {
-          case "Osobně":
-            formHTML = `<h3 class="uppercase">Osobně</h3>
-                        <h4>Najdeme nejbližšího vhodného poradce</h4>
-                        <p>Zadejte vaši obec nebo město a najdeme vám nejbližšího vhodného poradce:</p>
-                        <input type="text" placeholder="Zadejte Vaši obec nebo město…" id="osobObec">
-                        <button onclick="submitForm()">Vyhledat poradce</button>`;
-            break;
-          case "Kontaktním fomulářem":
-            formHTML = `<h3 class="uppercase">Kontaktní formulář</h3>
-                        <h4>Najdeme nejbližšího vhodného poradce</h4>
-                        <input type="text" placeholder="Stručný popis problému:" id="kontaktProblem">
-                        <input type="text" placeholder="Chcete poradce, který se specializuje?" id="kontaktPoradce">
-                        <input type="text" placeholder="Vaše telefonní číslo:" id="kontaktTel">
-                        <input type="text" placeholder="Váš E-mail" id="kontaktMail">
-                        <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-                        
-                        <button onclick="submitForm()">Vyhledat poradce</button>`;
-            break;
-          case "Telefonicky":
-            formHTML = `<h3 class="uppercase">Telefonicky</h3>
-                        <h4>Najdeme nejbližšího vhodného poradce</h4>
-                        <p>Zadejte vaše telefonní číslo. Ozveme se vám v co nejkratším termínu:</p>
-                        <input type="text" placeholder="Zadejte telefonní číslo" id="telefTel">
-                        <p>Vaše telefonní číslo zůstává anonymní a použijeme ho pouze k tomu, abychom vás mohli kontaktovat. Neukládáme ho a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-                        <button onclick="submitForm()">Vyhledat poradce</button>`;
-            break;
-          case "Videohovorem":
-            formHTML = `<h3 class="uppercase">Videohovorem</h3>
-                        <h4>Najdeme nejbližšího vhodného poradce</h4>
-                        <p>*Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-                        <input type="text" placeholder="Vaše telefonní číslo:" id="videoTel">
-                        <input type="text" placeholder="Váš E-mail" id="videoMail">
-                        <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-                        <button onclick="submitForm()">Vyhledat poradce</button>`;
-            break;
-        }
-        document.getElementById("extraForm").innerHTML = formHTML;
-        document.getElementById("extraForm").style.display = "block";
       }
 
-      function handleRadioChange(selectedOption) {
-        displayFormForOption(selectedOption);
+      function handleNext() {
+        if (currentStep === wizardData.length - 1) {
+          renderInputsForSelection();
+        } else {
+          currentStep++;
+          if (currentStep < wizardData.length) {
+            displayStep();
+          } else {
+            document.getElementById("wizard").innerHTML = "<h1>Konec</h1>";
+          }
+        }
+      }
+
+      function renderInputsForSelection() {
+        const inputContainer = document.getElementById("wizard");
+        switch (selectedOption) {
+          case "Osobně":
+            inputContainer.innerHTML = `<h3 class="uppercase">Osobně</h3>
+            <h4>Najdeme nejbližšího vhodného poradce</h4>
+            <p>Zadejte vaši obec nebo město a najdeme vám nejbližšího vhodného poradce:</p>
+            <input type="text" placeholder="Zadejte Vaši obec nebo město…" id="osobObec">
+            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            break;
+          case "Kontaktním fomulářem":
+            inputContainer.innerHTML = `
+            <h3 class="uppercase">Kontaktní formulář</h3>
+            <h4>Najdeme nejbližšího vhodného poradce</h4>
+            <input type="text" placeholder="Stručný popis problému:" id="kontaktProblem">
+            <input type="text" placeholder="Chcete poradce, který se specializuje?" id="kontaktPoradce">
+            <input type="text" placeholder="Vaše telefonní číslo:" id="kontaktTel">
+            <input type="text" placeholder="Váš E-mail" id="kontaktMail">
+            <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+            
+            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            break;
+          case "Telefonicky":
+            inputContainer.innerHTML = `
+            <h3 class="uppercase">Telefonicky</h3>
+            <h4>Najdeme nejbližšího vhodného poradce</h4>
+            <p>Zadejte vaše telefonní číslo. Ozveme se vám v co nejkratším termínu:</p>
+            <input type="text" placeholder="Zadejte telefonní číslo" id="telefTel">
+            <p>Vaše telefonní číslo zůstává anonymní a použijeme ho pouze k tomu, abychom vás mohli kontaktovat. Neukládáme ho a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            break;
+          case "Videohovorem":
+            inputContainer.innerHTML = `
+            <h3 class="uppercase">Videohovorem</h3>
+            <h4>Najdeme nejbližšího vhodného poradce</h4>
+            <p>*Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+            <input type="text" placeholder="Vaše telefonní číslo:" id="videoTel">
+            <input type="text" placeholder="Váš E-mail" id="videoMail">
+            <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            break;
+        }
       }
 
       function submitForm() {
-        // Confirm submission and redirect
-
-        window.location.href = "./confirm.html"; // Redirect to confirm.html
+        window.location.href = "./confirm.html";
       }
 
-      function next() {
-        if (currentStep < steps.length - 1) {
-          currentStep++;
-          displayStep();
-        } else {
-          alert("Finish the wizard!");
-        }
-      }
-
-      function back() {
-        if (currentStep > 0) {
-          currentStep--;
-          displayStep();
-        }
-      }
-
-      function handleAnswer(answer) {
-        console.log(`Answer: ${answer}`);
-        next();
-      }
-
+      // Initial call to display the first step
       displayStep();
     </script>
   </body>
