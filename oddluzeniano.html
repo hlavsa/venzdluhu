@@ -9642,14 +9642,22 @@
           >
             Co chcete řešit?
           </h3>
-          <div id="options">
-            <button
-              onclick="next()"
-              class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase"
-            >
-              Další krok
-            </button>
-          </div>
+          <div id="options"></div>
+          <button
+            onclick="next()"
+            class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase"
+          >
+            Další krok
+          </button>
+          <button
+            onclick="back()"
+            class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase"
+          >
+            Předchozí krok
+          </button>
+        </div>
+        <div id="kontaktForm" style="display: none">
+          <!-- The form will be inserted here when required -->
         </div>
       </div>
 
@@ -10102,7 +10110,7 @@
         document.getElementById("question").textContent = step.question;
         let optionsContent = "";
         // Check for specific questions and add additional HTML
-        if (step.question === "Do you have any pets?") {
+        if (step.question === "Chcete službu zadarmo nebo za poplatek?") {
           optionsContent += `<p>Můžeme Vás propojit i s advokáty či insolvenčními správci, kteří poskytují služby v oblasti oddlužení za poplatek.</p>`;
         }
         switch (step.type) {
@@ -10125,6 +10133,53 @@
             break;
         }
         document.getElementById("options").innerHTML = optionsContent;
+        document.getElementById("kontaktForm").style.display = "none";
+      }
+      function displayFormForOption(option) {
+        let formHTML = "";
+        switch (option) {
+          case "Osobně":
+            formHTML = `<h3 class="uppercase">Osobně</h3>
+                        <h4>Najdeme nejbližšího vhodného poradce</h4>
+                        <p>Zadejte vaši obec nebo město a najdeme vám nejbližšího vhodného poradce:</p>
+                        <input type="text" placeholder="Zadejte Vaši obec nebo město…" id="osobObec">
+                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+            break;
+          case "Kontaktním fomulářem":
+            formHTML = `<h3 class="uppercase">Kontaktní formulář</h3>
+                        <h4>Najdeme nejbližšího vhodného poradce</h4>
+                        <input type="text" placeholder="Stručný popis problému:" id="kontaktProblem">
+                        <input type="text" placeholder="Chcete poradce, který se specializuje?" id="kontaktPoradce">
+                        <input type="text" placeholder="Vaše telefonní číslo:" id="kontaktTel">
+                        <input type="text" placeholder="Váš E-mail" id="kontaktMail">
+                        <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+                        
+                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+            break;
+          case "Telefonicky":
+            formHTML = `<h3 class="uppercase">Telefonicky</h3>
+                        <h4>Najdeme nejbližšího vhodného poradce</h4>
+                        <p>Zadejte vaše telefonní číslo. Ozveme se vám v co nejkratším termínu:</p>
+                        <input type="text" placeholder="Zadejte telefonní číslo" id="telefTel">
+                        <p>Vaše telefonní číslo zůstává anonymní a použijeme ho pouze k tomu, abychom vás mohli kontaktovat. Neukládáme ho a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+            break;
+          case "Videohovorem":
+            formHTML = `<h3 class="uppercase">Videohovorem</h3>
+                        <h4>Najdeme nejbližšího vhodného poradce</h4>
+                        <p>*Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+                        <input type="text" placeholder="Vaše telefonní číslo:" id="videoTel">
+                        <input type="text" placeholder="Váš E-mail" id="videoMail">
+                        <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
+                        <button onclick="submitForm('Afternoon')">Vyhledat poradce</button>`;
+            break;
+        }
+        document.getElementById("extraForm").innerHTML = formHTML;
+        document.getElementById("extraForm").style.display = "block";
+      }
+
+      function handleRadioChange(selectedOption) {
+        displayFormForOption(selectedOption);
       }
 
       function next() {
