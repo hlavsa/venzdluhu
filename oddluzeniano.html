@@ -9627,7 +9627,7 @@
           </div>
         </div>
       </div>
-      <div class="bg-gray-100 px-6 py-18 md:py-32" id="wizard">
+      <div class="bg-gray-100 px-6 py-18 md:py-32">
         <div class="mt-8 mb-4 max-w-[80ch] mx-auto size-full">
           <h3 class="text-xl mb-8 text-center text-[#2362a2] font-light">
             Tady najdete pomoc. V databázi máme telefonní linky i poradny
@@ -9636,6 +9636,7 @@
         <div
           class="mt-8 bg-white shadow-md rounded p-8 md:p-24 mb-4 max-w-[80ch] mx-auto size-full"
         >
+          <div id="wizard"></div>
           <h3
             class="text-xl mb-8 text-center text-[#686868] font-light"
             id="question"
@@ -10110,36 +10111,48 @@
       function displayStep() {
         const step = wizardData[currentStep];
         const container = document.getElementById("wizard");
-        container.innerHTML = `<h2>${step.question}</h2>`;
+        container.innerHTML = `<h2 class="text-xl mb-8 text-center text-[#686868] font-light">${step.question}</h2>`;
 
         switch (step.type) {
           case "checkbox":
             step.options.forEach((option, index) => {
               container.innerHTML += `
-                    <div>
-                        <input type="checkbox" id="option${index}" name="option${index}">
-                        <label for="option${index}">${option}</label>
+                    <div class="gov-form-control gov-form-control--custom">
+                      <ul class="gov-form-group">
+                        <li class="gov-form-group__item">
+                          <input type="checkbox" id="option${index}" name="option${index}" class="gov-form-control__checkbox">
+                          <label for="option${index}" class="gov-form-control__label">${option}</label>
+                          
+                          <span class="gov-form-control__indicator"></span>
+                        </li>
+                      </ul>
                     </div>
                 `;
             });
-            container.innerHTML += `<button onclick="handleNext()">Další krok</button>`;
+            container.innerHTML += `<button onclick="handleNext()" class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase">Další krok</button>`;
             break;
           case "buttons":
             step.options.forEach((option) => {
-              container.innerHTML += `<button onclick="handleNext()">${option}</button>`;
+              container.innerHTML += `<button onclick="handleNext()" class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase">${option}</button>`;
             });
             break;
           case "radio":
             step.options.forEach((option, index) => {
               container.innerHTML += `
-                    <div>
-                        <input type="radio" id="option${index}" name="option" value="${option}"
-                            onchange="selectedOption='${option}'">
-                        <label for="option${index}">${option}</label>
+                    <div class="gov-form-control gov-form-control--custom">
+                      <ul class="gov-form-group">
+                        <li class="gov-form-group__item">
+                          <input type="radio" id="option${index}" name="option" value="${option}"
+                            onchange="selectedOption='${option}'"  class="gov-form-control__radio">
+                          <label for="option${index}" class="gov-form-control__label">${option}</label>
+                          
+                          <span class="gov-form-control__indicator"></span>
+                        </li>
+                      </ul>
                     </div>
                 `;
             });
-            container.innerHTML += `<button onclick="handleNext()">Další krok</button>`;
+            container.innerHTML += `<button onclick="handleNext()" class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase">Další krok</button>`;
             break;
         }
       }
@@ -10165,7 +10178,7 @@
             <h4>Najdeme nejbližšího vhodného poradce</h4>
             <p>Zadejte vaši obec nebo město a najdeme vám nejbližšího vhodného poradce:</p>
             <input type="text" placeholder="Zadejte Vaši obec nebo město…" id="osobObec">
-            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            <button onclick="submitForm()" class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase">Vyhledat poradce</button>`;
             break;
           case "Kontaktním fomulářem":
             inputContainer.innerHTML = `
@@ -10177,7 +10190,7 @@
             <input type="text" placeholder="Váš E-mail" id="kontaktMail">
             <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
             
-            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            <button onclick="submitForm()" class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase">Vyhledat poradce</button>`;
             break;
           case "Telefonicky":
             inputContainer.innerHTML = `
@@ -10186,7 +10199,7 @@
             <p>Zadejte vaše telefonní číslo. Ozveme se vám v co nejkratším termínu:</p>
             <input type="text" placeholder="Zadejte telefonní číslo" id="telefTel">
             <p>Vaše telefonní číslo zůstává anonymní a použijeme ho pouze k tomu, abychom vás mohli kontaktovat. Neukládáme ho a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            <button onclick="submitForm()" class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase">Vyhledat poradce</button>`;
             break;
           case "Videohovorem":
             inputContainer.innerHTML = `
@@ -10196,7 +10209,7 @@
             <input type="text" placeholder="Vaše telefonní číslo:" id="videoTel">
             <input type="text" placeholder="Váš E-mail" id="videoMail">
             <p>Váš e-mail i Vaše číslo zůstávají anonymní a použijeme je pouze k tomu, abychom vás mohli kontaktovat. Neukládáme je a neposkytujeme nikomu dalšímu, nikdy bez vašeho souhlasu. </p>
-            <button onclick="submitForm()">Vyhledat poradce</button>`;
+            <button onclick="submitForm()" class="bg-[#2362a2] hover:bg-[#254e80] text-white hover:text-white hover:underline py-2 px-4 rounded uppercase">Vyhledat poradce</button>`;
             break;
         }
       }
