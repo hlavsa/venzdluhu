@@ -9751,14 +9751,14 @@
                     <p class="bg-[#3077B7] p-6 text-white">
                       Služba je poskytována ZDARMA
                     </p>
-                    <h3 class="mt-6">Kontakt</h3>
-                    <p class="mb-2 text-[#686868]">
+                    <h3 class="py-6">Kontakt</h3>
+                    <p class="text-[#686868]">
                       Novákových 439/6, 180 00 Praha 8
                     </p>
-                    <p class="mb-2 text-[#686868]">
+                    <p class="text-[#686868]">
                       Prostory pro poskytování služeb: Ostrava, Sokolov, Praha
                     </p>
-                    <div class="flex flex-wrap">
+                    <div class="flex flex-wrap py-6">
                       <div class="w-full md:w-1/2 p-4">
                         <a
                           href="tel:"
@@ -10367,37 +10367,31 @@
       </div>
     </footer>
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Select all accordion buttons
+      document.addEventListener("DOMContentLoaded", function () {
         const accordionButtons = document.querySelectorAll(
-          "[data-accordion-target]"
+          'button[type="button"]'
         );
 
-        // Function to toggle an accordion
-        const toggleAccordion = (button) => {
-          const targetId = button.getAttribute("data-accordion-target");
-          const targetElement = document.querySelector(targetId);
-
-          // Check if the accordion is currently open
-          const isExpanded = button.getAttribute("aria-expanded") === "true";
-          if (isExpanded) {
-            targetElement.classList.add("hidden"); // Hide the content
-            button.setAttribute("aria-expanded", "false");
-            button
-              .querySelector("[data-accordion-icon]")
-              .classList.remove("rotate-180");
-          } else {
-            targetElement.classList.remove("hidden"); // Show the content
-            button.setAttribute("aria-expanded", "true");
-            button
-              .querySelector("[data-accordion-icon]")
-              .classList.add("rotate-180");
-          }
-        };
-
-        // Add click event listeners to each accordion button
         accordionButtons.forEach((button) => {
-          button.addEventListener("click", () => toggleAccordion(button));
+          button.addEventListener("click", function () {
+            const expanded =
+              this.getAttribute("aria-expanded") === "true" || false;
+            const target = document.querySelector(this.dataset.accordionTarget);
+
+            // Toggle the current button's expanded state
+            this.setAttribute("aria-expanded", !expanded);
+            this.querySelector("[data-accordion-icon]").style.transform =
+              expanded ? "rotate(0deg)" : "rotate(180deg)";
+
+            // Show or hide the accordion body
+            if (target) {
+              if (!expanded) {
+                target.classList.remove("hidden");
+              } else {
+                target.classList.add("hidden");
+              }
+            }
+          });
         });
       });
     </script>
